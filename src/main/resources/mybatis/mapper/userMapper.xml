@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chazen.ekanban.mapper.UserMapper" >
+    <!--<resultMap id="BaseResultMap" type="Person" >-->
+        <!--<id column="id" property="id" jdbcType="INTEGER" />-->
+        <!--<result column="address" property="address" jdbcType="VARCHAR" />-->
+        <!--<result column="age" property="age" jdbcType="INTEGER" />-->
+        <!--<result column="name" property="name" jdbcType="VARCHAR"/>-->
+    <!--</resultMap>-->
+
+    <!--<sql id="Base_Column_List" >-->
+        <!--id, address, age, name-->
+    <!--</sql>-->
+
+    <!--<select id="getPersonList" resultMap="BaseResultMap"  >-->
+        <!--SELECT-->
+        <!--<include refid="Base_Column_List" />-->
+        <!--FROM person-->
+    <!--</select>-->
+
+    <!--<select id="getPersonById" parameterType="java.lang.Integer" resultMap="BaseResultMap" >-->
+        <!--SELECT-->
+        <!--<include refid="Base_Column_List" />-->
+        <!--FROM person-->
+        <!--WHERE id = #{id}-->
+    <!--</select>-->
+
+    <!--<insert id="add" parameterType="Person" >-->
+        <!--INSERT INTO-->
+        <!--person-->
+        <!--(address,age,name)-->
+        <!--VALUES-->
+        <!--(#{address}, #{age}, #{name})-->
+    <!--</insert>-->
+
+    <!--<update id="update" parameterType="Person" >-->
+        <!--UPDATE-->
+        <!--person-->
+        <!--SET-->
+        <!--address = #{address},age = #{age},name = #{name}-->
+        <!--WHERE-->
+        <!--id = #{id}-->
+    <!--</update>-->
+
+    <!--<delete id="delete" parameterType="java.lang.Integer" >-->
+        <!--DELETE FROM-->
+        <!--person-->
+        <!--WHERE-->
+        <!--id = #{id}-->
+    <!--</delete>-->
+    <!--<resultMap id="resultSysUser" type="SysUser" >-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="username"  property="username" />-->
+        <!--<result column="password"  property="password" />-->
+        <!--<result column="roles" property="origin_roles" />-->
+    <!--</resultMap>-->
+
+    <!--<select id="findUserByUsername" parameterType="string" resultMap="resultSysUser">-->
+        <!--SELECT id, username,password,roles from tb_user where username = #{username}-->
+    <!--</select>-->
+
+    <insert id="save" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_user(username, password, last_password_reset_date) values (#{username},#{password},#{lastPasswordResetDate})
+    </insert>
+</mapper>
