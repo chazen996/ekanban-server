@@ -9,6 +9,7 @@ import java.util.List;
 public class SysUser {
 
     private int id;
+    /* 通过数据库索引控制username不能重复 */
     private String username;
     private String password;
     /* roles暂时不起作用，本项目用户无权限之分，这里保存下来的作用是为了适配JWT的各种

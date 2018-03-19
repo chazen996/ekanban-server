@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
 
-    @Select("select * from tb_user where username = #{username}")
+    @Select("select * from sys_user where username = #{username}")
     public SysUser findUserByUsername(String username);
 
     /* 关于如何在插入数据后原数据返回的方法：接口Mapper中返回类型为void，但在与其对应的Service中

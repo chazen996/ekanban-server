@@ -60,6 +60,6 @@
     <!--</select>-->
 
     <insert id="save" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
-        insert into tb_user(username, password, last_password_reset_date) values (#{username},#{password},#{lastPasswordResetDate})
+        insert into sys_user(username, password, last_password_reset_date) values (#{username},#{password},#{lastPasswordResetDate})
     </insert>
 </mapper>
