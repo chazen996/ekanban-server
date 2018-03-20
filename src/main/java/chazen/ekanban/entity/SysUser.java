@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SysUser {
-
+    /* 需要在数据库中设置id自增 */
     private int id;
     /* 通过数据库索引控制username不能重复 */
     private String username;

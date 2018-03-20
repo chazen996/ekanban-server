@@ -68,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                //所有的option请求都要放行，因为试探性的option请求不会带上获得的token，导致被拦截报401错误
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // 允许对于网站静态资源的无授权访问
                 .antMatchers(
                         HttpMethod.GET,

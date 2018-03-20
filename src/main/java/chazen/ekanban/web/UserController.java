@@ -2,6 +2,8 @@ package chazen.ekanban.web;
 
 import chazen.ekanban.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,12 @@ public class UserController {
     public String getUsers() {
         return "hahaha终于通了";
     }
+
+//    @RequestMapping(method = RequestMethod.OPTIONS)
+//    public ResponseEntity handle(){
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+}
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -149,4 +157,4 @@ public class UserController {
         return ResponseEntity.ok(r);
     }*/
 
-}
+
