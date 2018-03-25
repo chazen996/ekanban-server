@@ -2,13 +2,15 @@ package chazen.ekanban.web;
 
 import chazen.ekanban.entity.SysUser;
 import chazen.ekanban.service.UserService;
+import chazen.ekanban.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +31,26 @@ public class UserController {
     public String checkUsername (String username) {
         SysUser user = userService.findUserByUsername(username);
         return user!=null?"have":"not-have";
+    }
+
+    /* 处理文件上传，存储路径为绝对路径C:/ekanban-data */
+    @RequestMapping(value="testuploadimg", method = RequestMethod.POST)
+    public @ResponseBody
+    String uploadImg(@RequestParam("avatar") MultipartFile file,
+                     HttpServletRequest request) {
+        String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
+        /*System.out.println("fileName-->" + fileName);
+        System.out.println("getContentType-->" + contentType);*/
+//        String filePath = request.getSession().getServletContext().getRealPath("images/");
+        String filePath = "C://ekanban-data//images//";
+        try {
+            FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        //返回json
+        return "uploadimg success";
     }
 
 //    @RequestMapping(method = RequestMethod.OPTIONS)
