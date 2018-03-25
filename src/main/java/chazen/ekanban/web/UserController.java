@@ -1,5 +1,6 @@
 package chazen.ekanban.web;
 
+import chazen.ekanban.entity.SysUser;
 import chazen.ekanban.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
 public class UserController {
 
@@ -21,6 +22,13 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public String getUsers() {
         return "hahaha终于通了";
+    }
+
+
+    @RequestMapping(value = "checkUsername", method = RequestMethod.GET)
+    public String checkUsername (String username) {
+        SysUser user = userService.findUserByUsername(username);
+        return user!=null?"have":"not-have";
     }
 
 //    @RequestMapping(method = RequestMethod.OPTIONS)

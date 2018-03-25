@@ -47,7 +47,11 @@ public class AuthServiceImpl implements AuthService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         final String rawPassword = userToAdd.getPassword();
         userToAdd.setPassword(encoder.encode(rawPassword));
-        userToAdd.setRoles(asList("ROLE_ADMIN"));
+
+        final String rawSecretQuestionAnswer = userToAdd.getSecretQuestionAnswer();
+        userToAdd.setSecretQuestionAnswer(encoder.encode(rawSecretQuestionAnswer));
+
+        userToAdd.setRoles(asList("ROLE_USER"));
         return userService.save(userToAdd);
     }
 

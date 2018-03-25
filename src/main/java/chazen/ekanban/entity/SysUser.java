@@ -27,6 +27,12 @@ public class SysUser {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastPasswordResetDate;
 
+    private int secretQuestion;
+
+    private String secretQuestionAnswer;
+
+    private String emailAddress;
+
     public int getId() {
         return id;
     }
@@ -65,5 +71,29 @@ public class SysUser {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public int getSecretQuestion() {
+        return secretQuestion;
+    }
+
+    public void setSecretQuestion(int secretQuestion) {
+        this.secretQuestion = secretQuestion;
+    }
+
+    public String getSecretQuestionAnswer() {
+        return secretQuestionAnswer;
+    }
+
+    public void setSecretQuestionAnswer(String secretQuestionAnswer) {
+        this.secretQuestionAnswer = secretQuestionAnswer;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }
