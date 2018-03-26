@@ -3,11 +3,11 @@ package chazen.ekanban.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 /* 改变spring的默认静态资源路径，可实现文件上传后直接存在本地指定目录下，且前端项目可
  * 无差别使用静态文件 */
 @Configuration
-public class WebStaticResourceConfig extends WebMvcConfigurerAdapter {
+public class WebStaticResourceConfig extends WebMvcConfigurationSupport {
 
     /* 配置本地文件存储路径 */
     @Value("${cbs.imagesPath}")
