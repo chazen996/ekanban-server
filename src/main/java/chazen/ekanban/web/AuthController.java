@@ -78,7 +78,7 @@ public class AuthController {
     /* 处理文件上传，存储路径为绝对路径C:/ekanban-data/images */
     @RequestMapping(value="auth/uploadimg", method = RequestMethod.POST)
     public @ResponseBody
-    String uploadImg(@RequestParam("avatar") MultipartFile file,@RequestParam("data-temp-name") String tempName,
+    String uploadImg(@RequestParam("avatar") MultipartFile file,@RequestParam("img-temp-name") String tempName,
                      HttpServletRequest request) {
         String contentType = file.getContentType();
         /* 头像只接受.jpg格式 */
