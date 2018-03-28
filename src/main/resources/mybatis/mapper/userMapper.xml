@@ -58,8 +58,23 @@
     <!--<select id="findUserByUsername" parameterType="string" resultMap="resultSysUser">-->
         <!--SELECT id, username,password,roles from tb_user where username = #{username}-->
     <!--</select>-->
+    <resultMap id="userResultMap" type="SysUser" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="secret_question" property="secretQuestion" jdbcType="VARCHAR"/>
+        <result column="secret_question" property="secretQuestion" jdbcType="VARCHAR"/>
+        <result column="secret_question_answer" property="secretQuestionAnswer" jdbcType="VARCHAR"/>
+        <result column="email_address" property="emailAddress" jdbcType="VARCHAR"/>
+        <result column="last_password_reset_date" property="lastPasswordResetDate" jdbcType="DATE"/>
+    </resultMap>
+
 
     <insert id="save" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user(username, password, secret_question, secret_question_answer, email_address, last_password_reset_date) values (#{username},#{password},#{secretQuestion},#{secretQuestionAnswer},#{emailAddress},#{lastPasswordResetDate})
     </insert>
+
+    <select id="findUserBySecretIdentity" parameterType="SysUser" resultMap="userResultMap">
+        select * from sys_user where username=#{username} and secret_question=#{secretQuestion}
+    </select>
 </mapper>

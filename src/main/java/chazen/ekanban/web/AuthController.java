@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -101,5 +102,36 @@ public class AuthController {
     public String checkUsername (String username) {
         SysUser user = userService.findUserByUsername(username);
         return user!=null?"have":"not-have";
+    }
+
+    /* 注册用户时实时检查是否有重命名 */
+    @RequestMapping(value = "auth/checkEmailAddress", method = RequestMethod.GET)
+    public String checkEmailAddress (String emailAddress) {
+        SysUser user = userService.findUserByEmailAddress(emailAddress);
+        return user!=null?"have":"not-have";
+    }
+
+    /* 根据用户名、密保和密保问题确认用户身份(忘记密码) */
+    @RequestMapping(value = "auth/confirmUserIdentity",method = RequestMethod.POST)
+    public String confirmUserIdentity(@RequestBody SysUser toBeCheckedUser){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        SysUser userResult = userService.findUserBySecretIdentity(toBeCheckedUser);
+        if(userResult==null){
+            return "failure";
+        }
+        return encoder.matches(toBeCheckedUser.getSecretQuestionAnswer(),userResult.getSecretQuestionAnswer())?"success":"failure";
+    }
+
+    /* 利用密保问题修改用户密码 */
+    @RequestMapping(value = "auth/updatePasswordWithSecretQuestion",method = RequestMethod.POST)
+    public String updatePasswordWithSecretQuestion(@RequestBody SysUser targetUser){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        targetUser.setPassword(encoder.encode(targetUser.getPassword()));
+        if("failure".equals(confirmUserIdentity(targetUser))){
+            return "failure";
+        }
+
+        int result = userService.updatePassword(targetUser);
+        return result==1?"success":"failure";
     }
 }

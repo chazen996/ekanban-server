@@ -2,6 +2,7 @@ package chazen.ekanban.mapper;
 
 import chazen.ekanban.entity.SysUser;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 /* 此处需要使用@Mapper注解，也可通过Application入口文件@MapperScan注解统一设置 */
@@ -16,4 +17,11 @@ public interface UserMapper {
      * 再将获取到id后的数据原样返回即可* */
     public void save(SysUser user);
 
+    @Select("select * from sys_user where email_address = #{emailAddress}")
+    public SysUser findUserByEmailAddress(String emailAddress);
+
+    public  SysUser findUserBySecretIdentity(SysUser user);
+
+    @Update("update sys_user set password=#{password} where username=#{username}")
+    public int updatePassword(SysUser user);
 }

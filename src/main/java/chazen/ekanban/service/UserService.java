@@ -7,4 +7,10 @@ public interface UserService {
     public SysUser findUserByUsername(String username);
 
     public SysUser save(SysUser user);
+
+    public SysUser findUserByEmailAddress(String emailAddress);
+
+    public SysUser findUserBySecretIdentity(SysUser user);
+
+    public int updatePassword(SysUser user);
 }

@@ -31,4 +31,17 @@ public class UserServiceImpl implements UserService {
         userMapper.save(user);
         return user;
     }
+
+    public SysUser findUserByEmailAddress(String emailAddress){
+        return userMapper.findUserByEmailAddress(emailAddress);
+    }
+
+    public SysUser findUserBySecretIdentity(SysUser user){
+        return userMapper.findUserBySecretIdentity(user);
+    }
+
+    public int updatePassword(SysUser user){
+        return userMapper.updatePassword(user);
+    }
+
 }
