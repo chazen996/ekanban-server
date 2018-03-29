@@ -2,17 +2,36 @@ package chazen.ekanban.web;
 
 import chazen.ekanban.entity.SysUser;
 import chazen.ekanban.service.UserService;
+import chazen.ekanban.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
 public class UserController {
 
+    @Value("${cbs.imagesPath.path}")
+    private String imagesPath;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+    @Value("${jwt.header}")
+    private String tokenHeader;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -21,11 +40,74 @@ public class UserController {
     }
 
 
+    /* 登陆状态下使用密码更改密码 */
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    public String updatePassword(@RequestBody SysUser user, String oldPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        SysUser userTemp = userService.findUserByUsername(user.getUsername());
+        if (userTemp == null) {
+            return "failure";
+        }
+        if (encoder.matches(oldPassword, userTemp.getPassword())) {
+            user.setPassword(encoder.encode(user.getPassword()));
+            return userService.updatePassword(user) == 1 ? "success" : "failure";
+        } else {
+            return "failure";
+        }
+    }
+
+    /* 登陆状态下获取登陆用户个人信息 */
+    @RequestMapping(value = "getPersonalInfo", method = RequestMethod.GET)
+    public SysUser getPersonalInfo(String targetUsername,HttpServletRequest request) {
+        String token = request.getHeader(tokenHeader);
+        String username = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(targetUsername);
+        if (user == null) {
+            return null;
+        }
+        return user.getUsername().equals(username) ? user : null;
+    }
+
+    /* 登陆状态下修改用户头像 */
+    @RequestMapping(value = "changeUserAvatar",method = RequestMethod.GET)
+    public String changeUserAvatar(String username,HttpServletRequest request) throws FileNotFoundException {
+        String token = request.getHeader(tokenHeader);
+        String usernameWithToken = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if(user == null){
+            return null;
+        }
+        if(user.getUsername().equals(usernameWithToken)){
+            File imgageDir = new File(imagesPath);
+            if(!imgageDir.exists()){
+                return "failure";
+            }
+
+            File targetFile = new File(imagesPath+"/"+username+".jpg");
+            File tempFile = new File(imagesPath+"/"+username+"_temp.jpg");
+            if(targetFile.exists()){
+                targetFile.delete();
+                if(tempFile.exists()){
+                    tempFile.renameTo(targetFile);
+                    return "success";
+                }else{
+                    return "failure";
+                }
+            }else{
+                return "failure";
+            }
+
+        }else{
+            return "failure";
+        }
+    }
+
+}
 //    @RequestMapping(method = RequestMethod.OPTIONS)
 //    public ResponseEntity handle(){
 //        return new ResponseEntity(HttpStatus.OK);
 //    }
-}
+
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
