@@ -13,6 +13,7 @@
 
     <mappers>
         <mapper resource="mybatis/mapper/userMapper.xml"/>
+        <mapper resource="mybatis/mapper/projectMapper.xml"/>
         <!--<mapper class="chazen.demo.mapper.UserMapper"/>-->
     </mappers>
 </configuration>
