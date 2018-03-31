@@ -26,7 +26,7 @@
         <result column="project_name" property="projectName" jdbcType="VARCHAR" />
         <result column="project_description" property="projectDescription" jdbcType="VARCHAR" />
         <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
-        <result column="created_date" property="createdDate" jdbcType="DATE"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getProjects" resultMap="projectResultMap">

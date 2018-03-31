@@ -8,4 +8,6 @@ public interface ProjectService {
     public List<Project> getProjects(int userId);
     public int saveProject(Project project);
     public int saveUserProject(int userId,int projectId);
+    public int deleteProject(int projectId);
+    public int deleteUserProject(int projectId);
 }

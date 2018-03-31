@@ -29,5 +29,13 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.saveUserProject(userId,projectId);
     }
 
+    @Override
+    public int deleteProject(int projectId) {
+        return projectMapper.deleteProject(projectId);
+    }
 
+    @Override
+    public int deleteUserProject(int projectId) {
+        return projectMapper.deleteUserProject(projectId);
+    }
 }

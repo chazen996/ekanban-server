@@ -75,4 +75,24 @@ public class ProjectController{
             return "failure";
         }
     }
+
+    @Transactional
+    @RequestMapping(value = "deleteProject",method = RequestMethod.GET)
+    public String deleteProject(int projectId,String username,HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            projectService.deleteProject(projectId);
+            projectService.deleteUserProject(projectId);
+            return "success";
+            /* 实际业务代码end */
+        }else{
+            return "failure";
+        }
+    }
 }
