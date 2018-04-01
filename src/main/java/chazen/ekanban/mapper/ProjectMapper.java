@@ -2,10 +2,8 @@ package chazen.ekanban.mapper;
 
 
 import chazen.ekanban.entity.Project;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import chazen.ekanban.entity.SysUser;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +20,18 @@ public interface ProjectMapper {
 
     @Delete("delete from project where project_id=#{projectId}")
     public int deleteProject(int projectId);
+
     @Delete("delete from user_project where project_id=#{projectId}")
     public int deleteUserProject(int projectId);
+
+    @Select("select * from project where project_id=#{projectId}")
+    public Project getProject(int projectId);
+
+    @Update("update project set project_name=#{projectName},project_description=#{projectDescription} where project_id=#{projectId}")
+    public int updateProject(Project project);
+
+    public List<SysUser> getAllUserUnderProject(int projectId);
+
+    @Select("select count(*) from user_project where user_id=#{userId} and project_id=#{projectId}")
+    public int confirmTargetUserProjectExits(@Param("projectId") int projectId,@Param("userId") int userId);
 }

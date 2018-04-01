@@ -24,7 +24,7 @@ public class SysUser {
       * 默认为CURRENT_TIMESTAMP，勾上根据当前时间戳更新选项（更改密码时可自动更新），
       * 实体类的属性直接使用java.util.Date即好，但注意应当在save之前手动为其赋值
       * 设置当前系统时间。同时检查sql语句的书写，要把此条数据插入数据库*/
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date lastPasswordResetDate;
 
     private int secretQuestion;

@@ -1,6 +1,8 @@
 package chazen.ekanban.service;
 
 import chazen.ekanban.entity.Project;
+import chazen.ekanban.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,4 +12,8 @@ public interface ProjectService {
     public int saveUserProject(int userId,int projectId);
     public int deleteProject(int projectId);
     public int deleteUserProject(int projectId);
+    public Project getProject(int projectId);
+    public int updateProject(Project project);
+    public List<SysUser> getAllUserUnderProject(int projectId);
+    public int confirmTargetUserProjectExits(@Param("projectId") int projectId, @Param("userId") int userId);
 }

@@ -9,7 +9,7 @@ public class Project {
     private String projectName;
     private String projectDescription;
     private int createdBy;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createdDate;
 
     public int getProjectId() {

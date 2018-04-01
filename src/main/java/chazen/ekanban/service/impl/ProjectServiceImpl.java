@@ -1,6 +1,7 @@
 package chazen.ekanban.service.impl;
 
 import chazen.ekanban.entity.Project;
+import chazen.ekanban.entity.SysUser;
 import chazen.ekanban.mapper.ProjectMapper;
 import chazen.ekanban.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int deleteUserProject(int projectId) {
         return projectMapper.deleteUserProject(projectId);
+    }
+
+    @Override
+    public Project getProject(int projectId) {
+        return projectMapper.getProject(projectId);
+    }
+
+    @Override
+    public int updateProject(Project project) {
+        return projectMapper.updateProject(project);
+    }
+
+    @Override
+    public List<SysUser> getAllUserUnderProject(int projectId) {
+        return projectMapper.getAllUserUnderProject(projectId);
+    }
+
+    @Override
+    public int confirmTargetUserProjectExits(int projectId, int userId) {
+        return projectMapper.confirmTargetUserProjectExits(projectId,userId);
     }
 }
