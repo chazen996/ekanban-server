@@ -44,4 +44,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.updatePassword(user);
     }
 
+    @Override
+    public SysUser findUserById(int userId) {
+        return userMapper.findUserById(userId);
+    }
+
 }

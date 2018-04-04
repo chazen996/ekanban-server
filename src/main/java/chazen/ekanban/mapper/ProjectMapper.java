@@ -34,4 +34,14 @@ public interface ProjectMapper {
 
     @Select("select count(*) from user_project where user_id=#{userId} and project_id=#{projectId}")
     public int confirmTargetUserProjectExits(@Param("projectId") int projectId,@Param("userId") int userId);
+
+    @Delete("delete from user_project where user_id=#{userId} and project_id=#{projectId}")
+    public int removeUserFromProject(@Param("userId") int userId,@Param("projectId") int projectId);
+
+    @Select("select * from sys_user where username like CONCAT('%',#{username},'%')  ")
+    public List<SysUser> getUserLikeTheUsername(String username);
+
+    @Select("select * from project where project_id=#{projectId}")
+    public Project getTargetProject(int projectId);
+
 }

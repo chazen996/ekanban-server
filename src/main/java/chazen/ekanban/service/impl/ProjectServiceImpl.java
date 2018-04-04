@@ -59,4 +59,19 @@ public class ProjectServiceImpl implements ProjectService {
     public int confirmTargetUserProjectExits(int projectId, int userId) {
         return projectMapper.confirmTargetUserProjectExits(projectId,userId);
     }
+
+    @Override
+    public int removeUserFromProject(int userId, int projectId) {
+        return projectMapper.removeUserFromProject(userId,projectId);
+    }
+
+    @Override
+    public List<SysUser> getUserLikeTheUsername(String username) {
+        return projectMapper.getUserLikeTheUsername(username);
+    }
+
+    @Override
+    public Project getTargetProject(int projectId) {
+        return projectMapper.getTargetProject(projectId);
+    }
 }

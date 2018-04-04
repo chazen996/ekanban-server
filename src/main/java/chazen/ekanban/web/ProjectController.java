@@ -161,4 +161,109 @@ public class ProjectController{
             return null;
         }
     }
+
+    @RequestMapping(value = "removeUserFromProject",method = RequestMethod.GET)
+    public String removeUserFromProject(int projectId,int userId,String username,HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            /* 验证业务权限（是否有权限操作此项目 ） */
+            /* 验证目标项目是否存在 */
+            Project projectTemp = projectService.getProject(projectId);
+            if(projectTemp==null){
+                return "failure";
+            }
+            /* 确认调用者在当前项目内 */
+            if(projectService.confirmTargetUserProjectExits(projectId,user.getId())<=0){
+                return "failure";
+            }
+            return projectService.removeUserFromProject(userId,projectId)>=1?"success":"failure";
+            /* 实际业务代码end */
+        }else{
+            return "failure";
+        }
+    }
+
+    @RequestMapping(value = "getUserLikeTheUsername",method = RequestMethod.GET)
+    public List<SysUser> getUserLikeTheUsername(String targetUsername,String username,HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            /* 验证业务权限（是否有权限操作此项目 ） */
+            /* 验证目标项目是否存在 */
+           return projectService.getUserLikeTheUsername(targetUsername);
+            /* 实际业务代码end */
+        }else{
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "addUserIntoProject",method = RequestMethod.GET)
+    public String addUserIntoProject(int projectId,int userId,String username,HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            /* 验证业务权限（是否有权限操作此项目 ） */
+            /* 验证目标项目和用户是否存在 */
+            Project projectTemp = projectService.getProject(projectId);
+            if(projectTemp==null){
+                return "failure";
+            }
+            SysUser userTemp = userService.findUserById(userId);
+            if(userTemp==null){
+                return "failure";
+            }
+            /* 确认调用者在当前项目内 */
+            if(projectService.confirmTargetUserProjectExits(projectId,user.getId())<=0){
+                return "failure";
+            }
+            /* 防止重复插入 */
+            if(projectService.confirmTargetUserProjectExits(projectId,userId)>0){
+                return "failure";
+            }
+            return projectService.saveUserProject(userId,projectId)==1?"success":"failure";
+            /* 实际业务代码end */
+        }else{
+            return "failure";
+        }
+    }
+
+    @RequestMapping(value = "getTargetProject", method = RequestMethod.GET)
+    public Project getTargetProject(int projectId,String username,HttpServletRequest request) {
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            /* 确认调用者在当前项目内 */
+            if(projectService.confirmTargetUserProjectExits(projectId,user.getId())<=0) {
+                return null;
+            }
+            return projectService.getTargetProject(projectId);
+            /* 实际业务代码end */
+        }else{
+            return null;
+        }
+    }
 }

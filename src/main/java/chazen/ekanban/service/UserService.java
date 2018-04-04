@@ -13,4 +13,6 @@ public interface UserService {
     public SysUser findUserBySecretIdentity(SysUser user);
 
     public int updatePassword(SysUser user);
+
+    public SysUser findUserById(int userId);
 }
