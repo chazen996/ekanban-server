@@ -44,4 +44,9 @@ public interface ProjectMapper {
     @Select("select * from project where project_id=#{projectId}")
     public Project getTargetProject(int projectId);
 
+    @Select("select count(*) from user_project where project_id=#{projectId}")
+    public int getTargetProjectUserAmount(int projectId);
+
+    @Update("update project set created_by=#{userId} where project_id=#{projectId}")
+    public int changeProjectControlRight(@Param("userId")int userId,@Param("projectId")int projectId);
 }

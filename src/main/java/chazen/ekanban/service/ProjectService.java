@@ -19,4 +19,6 @@ public interface ProjectService {
     public int removeUserFromProject(int userId,int projectId);
     public List<SysUser> getUserLikeTheUsername(String username);
     public Project getTargetProject(int projectId);
+    public  int getTargetProjectUserAmount(int projectId);
+    public int changeProjectControlRight(int userId,int projectId);
 }

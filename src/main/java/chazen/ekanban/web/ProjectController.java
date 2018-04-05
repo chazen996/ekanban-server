@@ -183,6 +183,14 @@ public class ProjectController{
             if(projectService.confirmTargetUserProjectExits(projectId,user.getId())<=0){
                 return "failure";
             }
+            /* 防止待移除对象为项目所有者 */
+            if(projectTemp.getCreatedBy()==userId){
+                return "failure";
+            }
+            if(projectService.getTargetProjectUserAmount(projectId)<=1){
+                return "failure";
+            }
+
             return projectService.removeUserFromProject(userId,projectId)>=1?"success":"failure";
             /* 实际业务代码end */
         }else{
@@ -264,6 +272,42 @@ public class ProjectController{
             /* 实际业务代码end */
         }else{
             return null;
+        }
+    }
+
+    @Transactional
+    @RequestMapping(value = "changeProjectControlRight",method = RequestMethod.GET)
+    public String changeProjectControlRight(int projectId,int userId,String username,HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        if(user.getUsername().equals(usernameTemp)){
+            /* 实际业务代码start */
+            /* 确认调用者是项目所有者 */
+            Project projectTemp = projectService.getTargetProject(projectId);
+            if(projectTemp==null){
+                return "failure";
+            }
+            if(projectTemp.getCreatedBy()!=user.getId()){
+                return "failure";
+            }
+            /* 确认目标用户存在且在项目组中 */
+            SysUser userTemp = userService.findUserById(userId);
+            if(userTemp==null){
+                return "failure";
+            }
+            if(projectService.confirmTargetUserProjectExits(projectId,userId)<=0) {
+                return "failure";
+            }
+            /* 更新项目project */
+            projectService.changeProjectControlRight(userId,projectId);
+            return "success";
+            /* 实际业务代码end */
+        }else{
+            return "failure";
         }
     }
 }

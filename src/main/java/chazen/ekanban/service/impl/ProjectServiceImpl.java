@@ -74,4 +74,16 @@ public class ProjectServiceImpl implements ProjectService {
     public Project getTargetProject(int projectId) {
         return projectMapper.getTargetProject(projectId);
     }
+
+    @Override
+    public int getTargetProjectUserAmount(int projectId) {
+        return projectMapper.getTargetProjectUserAmount(projectId);
+    }
+
+    @Override
+    public int changeProjectControlRight(int userId, int projectId) {
+        return projectMapper.changeProjectControlRight(userId,projectId);
+    }
+
+
 }
