@@ -9,6 +9,15 @@ public class Card {
     private int projectId;
     private int sprintId;
     private int kanbanId;
+    private String cardStatus;
+
+    public String getCardStatus() {
+        return cardStatus;
+    }
+
+    public void setCardStatus(String cardStatus) {
+        this.cardStatus = cardStatus;
+    }
 
     public int getCardId() {
         return cardId;

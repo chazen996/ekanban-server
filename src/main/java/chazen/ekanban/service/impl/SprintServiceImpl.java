@@ -1,5 +1,6 @@
 package chazen.ekanban.service.impl;
 
+import chazen.ekanban.entity.Card;
 import chazen.ekanban.entity.Sprint;
 import chazen.ekanban.mapper.SprintMapper;
 import chazen.ekanban.service.SprintService;
@@ -22,5 +23,15 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public int createSprint(Sprint sprint) {
         return sprintMapper.createSprint(sprint);
+    }
+
+    @Override
+    public List<Card> getCardUnderSprint(int sprintId) {
+        return sprintMapper.getCardUnderSprint(sprintId);
+    }
+
+    @Override
+    public int updateSprint(Sprint sprint) {
+        return sprintMapper.updateSprint(sprint);
     }
 }

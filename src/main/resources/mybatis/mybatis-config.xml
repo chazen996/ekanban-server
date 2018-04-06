@@ -12,6 +12,7 @@
     </typeAliases>
 
     <mappers>
+        <mapper class="chazen.ekanban.mapper.CardMapper"/>
         <mapper resource="mybatis/mapper/userMapper.xml"/>
         <mapper resource="mybatis/mapper/projectMapper.xml"/>
         <mapper resource="mybatis/mapper/sprintMapper.xml"/>

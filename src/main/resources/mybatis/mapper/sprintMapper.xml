@@ -10,20 +10,18 @@
         <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
         <result column="project_id" property="projectId" jdbcType="INTEGER"/>
         <result column="sprint_status" property="sprintStatus" jdbcType="INTEGER"/>
-        <collection column="sprint_id" property="cardList" ofType="Card">
-            <id column="card_id" property="cardId" jdbcType="INTEGER"/>
-            <result column="card_type" property="cardType" jdbcType="VARCHAR"/>
-            <result column="card_description" property="cardDescription" jdbcType="VARCHAR"/>
-            <result column="card_content" property="cardContent" jdbcType="VARCHAR"/>
-            <result column="assigned_person" property="assignedPerson" jdbcType="INTEGER"/>
-            <result column="project_id" property="projectId" jdbcType="INTEGER"/>
-            <result column="kanban_id" property="kanbanId" jdbcType="INTEGER"/>
-        </collection>
+        <!--<collection column="sprint_id" property="cardList" ofType="Card">-->
+            <!--<id column="card_id" property="cardId" jdbcType="INTEGER"/>-->
+            <!--<result column="card_type" property="cardType" jdbcType="VARCHAR"/>-->
+            <!--<result column="card_description" property="cardDescription" jdbcType="VARCHAR"/>-->
+            <!--<result column="card_content" property="cardContent" jdbcType="VARCHAR"/>-->
+            <!--<result column="assigned_person" property="assignedPerson" jdbcType="INTEGER"/>-->
+            <!--<result column="project_id" property="projectId" jdbcType="INTEGER"/>-->
+            <!--<result column="kanban_id" property="kanbanId" jdbcType="INTEGER"/>-->
+        <!--</collection>-->
     </resultMap>
     <select id="getSprintUnderProject" resultMap="sprintResultMap">
-      select s.*,c.*
-      from sprint s,card c
-      where s.project_id=#{projectId} and s.sprint_id=c.sprint_id
+      select * from sprint s where project_id=#{projectId}
     </select>
 
 
