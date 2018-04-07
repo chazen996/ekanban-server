@@ -12,4 +12,5 @@ public interface SprintService {
     public int createSprint(Sprint sprint);
     public List<Card> getCardUnderSprint(int sprintId);
     public int updateSprint(Sprint sprint);
+    public int  deleteSprint(int sprintId);
 }

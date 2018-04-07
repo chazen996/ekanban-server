@@ -13,7 +13,6 @@ public class Sprint {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endDate;
-    private int createdBy;
     private int projectId;
     private String sprintStatus;
     private List<Card> cardList;
@@ -56,14 +55,6 @@ public class Sprint {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
     }
 
     public int getProjectId() {

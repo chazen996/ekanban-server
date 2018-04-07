@@ -7,7 +7,6 @@
         <result column="sprint_description" property="sprintDescription" jdbcType="VARCHAR" />
         <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
         <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
-        <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
         <result column="project_id" property="projectId" jdbcType="INTEGER"/>
         <result column="sprint_status" property="sprintStatus" jdbcType="INTEGER"/>
         <!--<collection column="sprint_id" property="cardList" ofType="Card">-->
@@ -23,6 +22,18 @@
     <select id="getSprintUnderProject" resultMap="sprintResultMap">
       select * from sprint s where project_id=#{projectId}
     </select>
+
+    <update id="updateSprint"  parameterType="Sprint">
+        update sprint
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sprintName!=null">sprint_name=#{sprintName},</if>
+            <if test="sprintDescription!=null">sprint_description=#{sprintDescription},</if>
+            <if test="startDate!=null">start_date=#{startDate},</if>
+            <if test="endDate!=null">end_date=#{endDate},</if>
+            <if test="sprintStatus!=null">sprint_status=#{sprintStatus},</if>
+        </trim>
+        WHERE sprint_id=#{sprintId}
+    </update>
 
 
     <!--<resultMap id="userResultMap" type="SysUser" >-->

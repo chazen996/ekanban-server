@@ -17,4 +17,30 @@ public class CardServiceImpl implements CardService{
     public int createCard(Card card) {
         return cardMapper.createCard(card);
     }
+
+    @Override
+    public int deleteCardUnderSprintButOnKanban(int sprintId) {
+        return cardMapper.deleteCardUnderSprintButOnKanban(sprintId);
+    }
+
+    @Override
+    public int changeCardStatusUnderSprint(String cardStatus, int sprintId) {
+        return cardMapper.changeCardStatusUnderSprint(cardStatus,sprintId);
+    }
+
+    @Override
+    public int deleteCardUnderSprint(int sprintId) {
+        return cardMapper.deleteCardUnderSprint(sprintId);
+    }
+
+    @Override
+    public int deleteCardByCardId(int cardId) {
+        return cardMapper.deleteCardByCardId(cardId);
+    }
+
+    @Override
+    public int updateCard(Card card) {
+        return cardMapper.updateCard(card);
+    }
+
 }

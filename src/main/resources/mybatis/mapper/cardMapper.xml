@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chazen.ekanban.mapper.CardMapper" >
+    <!--<resultMap id="sprintResultMap" type="Sprint" >-->
+        <!--<id column="sprint_id" property="sprintId" jdbcType="INTEGER" />-->
+        <!--<result column="sprint_name" property="sprintName" jdbcType="VARCHAR" />-->
+        <!--<result column="sprint_description" property="sprintDescription" jdbcType="VARCHAR" />-->
+        <!--<result column="start_date" property="startDate" jdbcType="TIMESTAMP" />-->
+        <!--<result column="end_date" property="endDate" jdbcType="TIMESTAMP" />-->
+        <!--<result column="created_by" property="createdBy" jdbcType="INTEGER"/>-->
+        <!--<result column="project_id" property="projectId" jdbcType="INTEGER"/>-->
+        <!--<result column="sprint_status" property="sprintStatus" jdbcType="INTEGER"/>-->
+        <!--&lt;!&ndash;<collection column="sprint_id" property="cardList" ofType="Card">&ndash;&gt;-->
+            <!--&lt;!&ndash;<id column="card_id" property="cardId" jdbcType="INTEGER"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="card_type" property="cardType" jdbcType="VARCHAR"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="card_description" property="cardDescription" jdbcType="VARCHAR"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="card_content" property="cardContent" jdbcType="VARCHAR"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="assigned_person" property="assignedPerson" jdbcType="INTEGER"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="project_id" property="projectId" jdbcType="INTEGER"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<result column="kanban_id" property="kanbanId" jdbcType="INTEGER"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</collection>&ndash;&gt;-->
+    <!--</resultMap>-->
+    <!--<select id="getSprintUnderProject" resultMap="sprintResultMap">-->
+      <!--select * from sprint s where project_id=#{projectId}-->
+    <!--</select>-->
+
+    <update id="updateCard"  parameterType="Card">
+        update card
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cardType!=null">card_type=#{cardType},</if>
+            <if test="cardDescription!=null">card_description=#{cardDescription},</if>
+            <if test="cardContent!=null">card_content=#{cardContent},</if>
+            <if test="projectId!=null and projectId!=0">project_id=#{projectId},</if>
+            <if test="sprintId!=null and sprintId!=0">sprint_id=#{sprintId},</if>
+            <if test="kanbanId!=null and kanbanId!=0">kanban_id=#{kanbanId},</if>
+            <if test="cardStatus!=null">card_status=#{cardStatus},</if>
+        </trim>
+        WHERE card_id=#{cardId}
+    </update>
+
+    <insert id="createCard" parameterType="Card">
+        insert into card
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test='cardType != null'>
+                card_type,
+            </if>
+            <if test='cardDescription!= null'>
+                card_description,
+            </if>
+            <if test='cardContent != null'>
+                card_content,
+            </if>
+            <if test='assignedPerson != null and assignedPerson != 0'>
+                assigned_person,
+            </if>
+            <if test='projectId != null and projectId != 0'>
+                project_id,
+            </if>
+            <if test='sprintId != null and sprintId != 0'>
+                sprint_id,
+            </if>
+            <if test='kanbanId != null and kanbanId != 0'>
+                kanban_id,
+            </if>
+            <if test='cardStatus != null'>
+                card_status,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test='cardType != null'>
+                #{cardType},
+            </if>
+            <if test='cardDescription!= null'>
+                #{cardDescription},
+            </if>
+            <if test='cardContent != null'>
+                #{cardContent},
+            </if>
+            <if test='assignedPerson != null and assignedPerson != 0'>
+                #{assignedPerson},
+            </if>
+            <if test='projectId != null and projectId != 0'>
+                #{projectId},
+            </if>
+            <if test='sprintId != null and sprintId != 0'>
+                #{sprintId},
+            </if>
+            <if test='kanbanId != null and kanbanId != 0'>
+                #{kanbanId},
+            </if>
+            <if test='cardStatus != null'>
+                #{cardStatus},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

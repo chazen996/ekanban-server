@@ -34,4 +34,9 @@ public class SprintServiceImpl implements SprintService {
     public int updateSprint(Sprint sprint) {
         return sprintMapper.updateSprint(sprint);
     }
+
+    @Override
+    public int deleteSprint(int sprintId) {
+        return sprintMapper.deleteSprint(sprintId);
+    }
 }
