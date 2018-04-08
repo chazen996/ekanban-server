@@ -49,4 +49,7 @@ public interface ProjectMapper {
 
     @Update("update project set created_by=#{userId} where project_id=#{projectId}")
     public int changeProjectControlRight(@Param("userId")int userId,@Param("projectId")int projectId);
+
+    @Select("select * from project where project_id in (select project_id from kanban where kanban_id=#{kanbanId})")
+    public Project getProjectByKanbanId(int kanbanId);
 }

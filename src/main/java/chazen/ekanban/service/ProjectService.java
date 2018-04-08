@@ -21,4 +21,5 @@ public interface ProjectService {
     public Project getTargetProject(int projectId);
     public  int getTargetProjectUserAmount(int projectId);
     public int changeProjectControlRight(int userId,int projectId);
+    public Project getProjectByKanbanId(int kanbanId);
 }

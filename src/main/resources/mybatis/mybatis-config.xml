@@ -17,6 +17,8 @@
         <mapper resource="mybatis/mapper/projectMapper.xml"/>
         <mapper resource="mybatis/mapper/sprintMapper.xml"/>
         <mapper resource="mybatis/mapper/cardMapper.xml"/>
+        <mapper resource="mybatis/mapper/kanbanMapper.xml"/>
+        <mapper resource="mybatis/mapper/columnMapper.xml"/>
         <!--<mapper class="chazen.demo.mapper.UserMapper"/>-->
     </mappers>
 </configuration>

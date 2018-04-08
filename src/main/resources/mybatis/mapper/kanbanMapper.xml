@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chazen.ekanban.mapper.KanbanMapper" >
+    <resultMap id="kanbanResultMap" type="Kanban" >
+        <id column="kanban_id" property="kanbanId" jdbcType="INTEGER" />
+        <result column="kanban_name" property="kanbanName" jdbcType="VARCHAR" />
+        <result column="kanban_description" property="kanbanDescription" jdbcType="VARCHAR" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="kanban_height" property="kanbanHeight" jdbcType="INTEGER"/>
+        <!--<collection column="sprint_id" property="cardList" ofType="Card">-->
+        <!--<id column="card_id" property="cardId" jdbcType="INTEGER"/>-->
+        <!--<result column="card_type" property="cardType" jdbcType="VARCHAR"/>-->
+        <!--<result column="card_description" property="cardDescription" jdbcType="VARCHAR"/>-->
+        <!--<result column="card_content" property="cardContent" jdbcType="VARCHAR"/>-->
+        <!--<result column="assigned_person" property="assignedPerson" jdbcType="INTEGER"/>-->
+        <!--<result column="project_id" property="projectId" jdbcType="INTEGER"/>-->
+        <!--<result column="kanban_id" property="kanbanId" jdbcType="INTEGER"/>-->
+        <!--</collection>-->
+    </resultMap>
+    <select id="getKanbanUnderProject" resultMap="kanbanResultMap">
+        select * from kanban where project_id=#{projectId}
+    </select>
+</mapper>

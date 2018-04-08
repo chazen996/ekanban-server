@@ -85,5 +85,10 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.changeProjectControlRight(userId,projectId);
     }
 
+    @Override
+    public Project getProjectByKanbanId(int kanbanId) {
+        return projectMapper.getProjectByKanbanId(kanbanId);
+    }
+
 
 }
