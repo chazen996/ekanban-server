@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chazen.ekanban.mapper.KanbanColumnMapper" >
     <resultMap id="columnResultMap" type="KanbanColumn" >
-        <id column="column_id" property="columnId" jdbcType="INTEGER" />
+        <id column="column_id" property="columnId" jdbcType="VARCHAR" />
         <result column="column_name" property="columnName" jdbcType="VARCHAR" />
         <result column="column_width" property="columnWidth" jdbcType="INTEGER" />
         <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
         <result column="kanban_id" property="kanbanId" jdbcType="INTEGER"/>
         <result column="position" property="position" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
         <!--<collection column="sprint_id" property="cardList" ofType="Card">-->
         <!--<id column="card_id" property="cardId" jdbcType="INTEGER"/>-->
         <!--<result column="card_type" property="cardType" jdbcType="VARCHAR"/>-->

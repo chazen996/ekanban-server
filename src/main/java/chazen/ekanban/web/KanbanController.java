@@ -6,6 +6,7 @@ import chazen.ekanban.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -175,8 +176,8 @@ public class KanbanController {
         }
     }
 
-    @RequestMapping(value = "getColumns",method = RequestMethod.GET)
-    public List<KanbanColumn> getColumn(int kanbanId, String username, HttpServletRequest request){
+    @RequestMapping(value = "getKanbanData",method = RequestMethod.GET)
+    public KanbanDataResponse getColumn(int kanbanId, String username, HttpServletRequest request){
         String token = request.getHeader(tokenHeader);
         String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
         SysUser user = userService.findUserByUsername(username);
@@ -197,30 +198,102 @@ public class KanbanController {
                 return null;
             }
 
+            /* 设置columns */
             List<KanbanColumn> kanbanColumns = kanbanColumnService.getColumns(kanbanId);
-            List<KanbanColumn> result = new ArrayList<KanbanColumn>();
-            Map<Integer,KanbanColumn> columnMap = new HashMap<Integer, KanbanColumn>();
+            List<KanbanColumn> columns = new ArrayList<KanbanColumn>();
+            Map<String,KanbanColumn> columnMap = new HashMap<String, KanbanColumn>();
             for(KanbanColumn kanbanColumn : kanbanColumns){
                 if(kanbanColumn.getParentId().equals("0")){
-                    result.add(kanbanColumn);
+                    columns.add(kanbanColumn);
                 }
                 kanbanColumn.setSubColumn(new ArrayList<KanbanColumn>());
                 columnMap.put(kanbanColumn.getColumnId(), kanbanColumn);
             }
-            Collections.sort(result);
+            Collections.sort(columns);
             for(KanbanColumn kanbanColumn : kanbanColumns){
                 String[] parentId = kanbanColumn.getParentId().split(",");
                 if(parentId.length>1){
-                    List<KanbanColumn> subColumn = columnMap.get(Integer.parseInt(parentId[parentId.length-1])).getSubColumn();
+                    List<KanbanColumn> subColumn = columnMap.get(parentId[parentId.length-1]).getSubColumn();
                     subColumn.add(kanbanColumn);
                     Collections.sort(subColumn);
                 }
             }
+            /* 设置swimlanes */
+            List<Swimlane> swimlanes = kanbanColumnService.getSwimlanes(kanbanId);
 
-            return result;
+
+            KanbanDataResponse kanbanDataResponse = new KanbanDataResponse();
+            kanbanDataResponse.setColumns(columns);
+            kanbanDataResponse.setSwimlanes(swimlanes);
+
+            return kanbanDataResponse;
             /* 实际业务代码end */
         } else {
             return null;
+        }
+    }
+
+    @Transactional
+    @RequestMapping(value = "saveKanbanData",method = RequestMethod.POST)
+    public String getColumn(@RequestBody KanbanDataRequest kanbanDataRequest, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        int kanbanId = kanbanDataRequest.getKanbanId();
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return "failure";
+            }
+            /* 确认调用者为项目所有者 */
+            if(projectService.getProjectByKanbanId(kanbanId).getCreatedBy()!=user.getId()){
+                return "failure";
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return "failure";
+            }
+
+            List<KanbanColumn> columns = kanbanDataRequest.getColumns();
+            List<Swimlane> swimlanes = kanbanDataRequest.getSwimlanes();
+            String[] toBeDeletedColumn = kanbanDataRequest.getToBeDeletedColumn();
+            String[] toBeDeletedSwimlane = kanbanDataRequest.getToBeDeletedSwimlane();
+
+            /* 删除泳道和列 */
+            for(String columnId:toBeDeletedColumn){
+                kanbanColumnService.deleteColumn(columnId);
+            }
+            for(String swimlaneId:toBeDeletedSwimlane){
+                kanbanColumnService.deleteSwimlane(swimlaneId);
+            }
+            /* 保存泳道 */
+            for(Swimlane swimlane:swimlanes){
+                Swimlane swimlaneTemp = kanbanColumnService.getSwimlane(swimlane.getSwimlaneId());
+                if(swimlaneTemp==null){
+                    kanbanColumnService.saveSwimlane(swimlane);
+                }else{
+                    kanbanColumnService.updateSwimlane(swimlane);
+                }
+            }
+            /* 保存列 */
+            for(KanbanColumn kanbanColumn:columns){
+                KanbanColumn kanbanColumnTemp = kanbanColumnService.getColumn(kanbanColumn.getColumnId());
+                if(kanbanColumnTemp==null){
+                    kanbanColumnService.saveColumn(kanbanColumn);
+                }else{
+                    kanbanColumnService.updateColumn(kanbanColumn);
+                }
+            }
+            return "success";
+            /* 实际业务代码end */
+        } else {
+            return "success";
         }
     }
 

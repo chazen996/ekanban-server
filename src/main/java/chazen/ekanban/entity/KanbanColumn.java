@@ -3,13 +3,14 @@ package chazen.ekanban.entity;
 import java.util.List;
 
 public class KanbanColumn implements Comparable<KanbanColumn> {
-    private int columnId;
+    private String columnId;
     private String columnName;
     private int columnWidth;
     private String parentId;
     private int kanbanId;
     private int position;
     private List<KanbanColumn> subColumn;
+    private String status;
 
     public int getPosition() {
         return position;
@@ -27,11 +28,11 @@ public class KanbanColumn implements Comparable<KanbanColumn> {
         this.subColumn = subColumn;
     }
 
-    public int getColumnId() {
+    public String getColumnId() {
         return columnId;
     }
 
-    public void setColumnId(int columnId) {
+    public void setColumnId(String columnId) {
         this.columnId = columnId;
     }
 
@@ -65,6 +66,14 @@ public class KanbanColumn implements Comparable<KanbanColumn> {
 
     public void setKanbanId(int kanbanId) {
         this.kanbanId = kanbanId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
