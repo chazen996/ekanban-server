@@ -39,4 +39,9 @@ public class SprintServiceImpl implements SprintService {
     public int deleteSprint(int sprintId) {
         return sprintMapper.deleteSprint(sprintId);
     }
+
+    @Override
+    public List<Sprint> getTargetStatusSprints(int projectId, String sprintStatus) {
+        return sprintMapper.getTargetStatusSprints(projectId,sprintStatus);
+    }
 }

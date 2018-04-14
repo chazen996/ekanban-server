@@ -2,10 +2,7 @@ package chazen.ekanban.mapper;
 
 import chazen.ekanban.entity.Card;
 import chazen.ekanban.entity.Sprint;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +21,6 @@ public interface SprintMapper {
 
     @Delete("delete from sprint where sprint_id=#{sprintId}")
     public int  deleteSprint(int sprintId);
+
+    public List<Sprint> getTargetStatusSprints(@Param("projectId") int projectId, @Param("sprintStatus") String sprintStatus);
 }

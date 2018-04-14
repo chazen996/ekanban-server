@@ -23,6 +23,11 @@
       select * from sprint s where project_id=#{projectId}
     </select>
 
+    <select id="getTargetStatusSprints" resultMap="sprintResultMap">
+      select * from sprint s where project_id=#{projectId} and sprint_status=#{sprintStatus}
+    </select>
+
+
     <update id="updateSprint"  parameterType="Sprint">
         update sprint
         <trim prefix="set" suffixOverrides=",">

@@ -354,4 +354,39 @@ public class KanbanController {
             return null;
         }
     }
+
+    @RequestMapping(value = "getOpenedSprints",method = RequestMethod.GET)
+    public List<Sprint> getOpenedSprints(int kanbanId, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return null;
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return null;
+            }
+            Project projectTemp = projectService.getProjectByKanbanId(kanbanId);
+            if(projectTemp==null){
+                return null;
+            }
+            List<Sprint> sprints = sprintService.getTargetStatusSprints(projectTemp.getProjectId(),"open");
+            for(Sprint sprint:sprints){
+                sprint.setCardList(sprintService.getCardUnderSprint(sprint.getSprintId()));
+            }
+            return sprints;
+            /* 实际业务代码end */
+        } else {
+            return null;
+        }
+    }
 }
