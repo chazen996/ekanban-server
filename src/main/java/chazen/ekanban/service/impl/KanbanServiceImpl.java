@@ -39,4 +39,10 @@ public class KanbanServiceImpl implements KanbanService{
     public Kanban getKanbanById(int kanbanId) {
         return kanbanMapper.getKanbanById(kanbanId);
     }
+
+    @Override
+    public int updateKanbanHeight(int kanbanId, int kanbanHeight) {
+        return kanbanMapper.updateKanbanHeight(kanbanId,kanbanHeight);
+    }
+
 }

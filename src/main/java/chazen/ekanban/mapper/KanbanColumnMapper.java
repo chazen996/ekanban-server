@@ -25,11 +25,11 @@ public interface KanbanColumnMapper {
 
     @Select("select * from swimlane where kanban_id=#{kanbanId}")
     List<Swimlane> getSwimlanes(int kanbanId);
-    @Select("select * from swimlane where swimlaneId=#{swimlaneId}")
+    @Select("select * from swimlane where swimlane_id=#{swimlaneId}")
     Swimlane getSwimlane(String swimlaneId);
     @Insert("insert into swimlane(swimlane_id,swimlane_name,position,group_id,height,across_column,column_position,group_member_number,kanban_id) values(#{swimlaneId},#{swimlaneName},#{position},#{groupId},#{height},#{acrossColumn},#{columnPosition},#{groupMemberNumber},#{kanbanId})")
     int saveSwimlane(Swimlane swimlane);
-    @Delete("delete from swimlane where swimlaneId=#{swimlaneId}")
+    @Delete("delete from swimlane where swimlane_id=#{swimlaneId}")
     int deleteSwimlane(String swimlaneId);
     @Update("update swimlane set swimlane_name=#{swimlaneName},position=#{position},group_id=#{groupId},height=#{height},across_column=#{acrossColumn},column_position=#{columnPosition},group_member_number=#{groupMemberNumber} where swimlane_id=#{swimlaneId}")
     int updateSwimlane(Swimlane swimlane);

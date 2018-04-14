@@ -262,8 +262,11 @@ public class KanbanController {
 
             List<KanbanColumn> columns = kanbanDataRequest.getColumns();
             List<Swimlane> swimlanes = kanbanDataRequest.getSwimlanes();
+            int kanbanHeight = kanbanDataRequest.getKanbanHeight();
             String[] toBeDeletedColumn = kanbanDataRequest.getToBeDeletedColumn();
             String[] toBeDeletedSwimlane = kanbanDataRequest.getToBeDeletedSwimlane();
+
+            kanbanService.updateKanbanHeight(kanbanId,kanbanHeight);
 
             /* 删除泳道和列 */
             for(String columnId:toBeDeletedColumn){

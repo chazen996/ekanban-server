@@ -11,4 +11,5 @@ public interface KanbanService {
     public int deleteKanban(int kanbanId);
     public int updateKanban(Kanban kanban);
     public Kanban getKanbanById(int kanbanId);
+    public int updateKanbanHeight(int kanbanId,int kanbanHeight);
 }

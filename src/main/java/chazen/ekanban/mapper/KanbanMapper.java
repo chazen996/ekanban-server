@@ -22,4 +22,7 @@ public interface KanbanMapper {
 
     @Select("select * from kanban where kanban_id=#{kanbanId}")
     public Kanban getKanbanById(int kanbanId);
+
+    @Update("update kanban set kanban_height=#{kanbanHeight} where kanban_id=#{kanbanId}")
+    public int updateKanbanHeight(@Param("kanbanId")int kanbanId,@Param("kanbanHeight")int kanbanHeight);
 }

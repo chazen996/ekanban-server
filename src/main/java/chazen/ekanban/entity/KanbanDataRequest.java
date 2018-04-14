@@ -8,6 +8,15 @@ public class KanbanDataRequest {
     private List<KanbanColumn> columns;
     private List<Swimlane> swimlanes;
     private int kanbanId;
+    private int kanbanHeight;
+
+    public int getKanbanHeight() {
+        return kanbanHeight;
+    }
+
+    public void setKanbanHeight(int kanbanHeight) {
+        this.kanbanHeight = kanbanHeight;
+    }
 
     public int getKanbanId() {
         return kanbanId;
