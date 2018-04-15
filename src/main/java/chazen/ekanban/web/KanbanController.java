@@ -381,7 +381,7 @@ public class KanbanController {
             }
             List<Sprint> sprints = sprintService.getTargetStatusSprints(projectTemp.getProjectId(),"open");
             for(Sprint sprint:sprints){
-                sprint.setCardList(sprintService.getCardUnderSprint(sprint.getSprintId()));
+                sprint.setCardList(sprintService.getCardUnderSprintButWithoutKanbanId(sprint.getSprintId()));
             }
             return sprints;
             /* 实际业务代码end */
@@ -389,4 +389,77 @@ public class KanbanController {
             return null;
         }
     }
+
+    @RequestMapping(value = "getCardUnderKanban",method = RequestMethod.GET)
+    public List<Card> getCardUnderKanban(int kanbanId, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return null;
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return null;
+            }
+            Project projectTemp = projectService.getProjectByKanbanId(kanbanId);
+            if(projectTemp==null){
+                return null;
+            }
+
+            return cardService.getCardUnderKanban(kanbanId);
+            /* 实际业务代码end */
+        } else {
+            return null;
+        }
+    }
+    @Transactional
+    @RequestMapping(value = "deleteUnusualCard",method = RequestMethod.POST)
+    public String deleteUnusualCard(@RequestBody TobeDeletedCardList tobeDeletedCardList, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        int kanbanId = tobeDeletedCardList.getKanbanId();
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return "failure";
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return "failure";
+            }
+            Integer[] cardIdList = tobeDeletedCardList.getCardIdList();
+            /* 检查待删除任务是否在当前看板上 */
+            for(Integer cardId:cardIdList){
+                if(cardService.getCardById(cardId).getKanbanId()!=kanbanId){
+                    return "failure";
+                }
+            }
+            for(Integer cardId:cardIdList){
+                cardService.deleteCardByCardId(cardId);
+            }
+
+            return "success";
+            /* 实际业务代码end */
+        } else {
+            return "failure";
+        }
+    }
+
+
 }

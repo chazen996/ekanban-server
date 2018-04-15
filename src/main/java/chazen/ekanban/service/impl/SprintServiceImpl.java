@@ -44,4 +44,9 @@ public class SprintServiceImpl implements SprintService {
     public List<Sprint> getTargetStatusSprints(int projectId, String sprintStatus) {
         return sprintMapper.getTargetStatusSprints(projectId,sprintStatus);
     }
+
+    @Override
+    public List<Card> getCardUnderSprintButWithoutKanbanId(int sprintId) {
+        return sprintMapper.getCardUnderSprintButWithoutKanbanId(sprintId);
+    }
 }

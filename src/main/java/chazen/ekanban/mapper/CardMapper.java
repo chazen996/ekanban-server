@@ -1,11 +1,10 @@
 package chazen.ekanban.mapper;
 
 import chazen.ekanban.entity.Card;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Repository
@@ -25,4 +24,10 @@ public interface CardMapper {
 
     @Delete("delete from card where card_id=#{cardId}")
     public int deleteCardByCardId(int cardId);
+
+    @Select("select * from card where kanban_id=#{kanbanId}")
+    public List<Card> getCardUnderKanban(int kanbanId);
+
+    @Select("select * from card where card_id=#{cardId}")
+    public Card getCardById(int cardId);
 }

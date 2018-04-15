@@ -7,6 +7,8 @@ import chazen.ekanban.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CardServiceImpl implements CardService{
 
@@ -41,6 +43,16 @@ public class CardServiceImpl implements CardService{
     @Override
     public int updateCard(Card card) {
         return cardMapper.updateCard(card);
+    }
+
+    @Override
+    public List<Card> getCardUnderKanban(int kanbanId) {
+        return cardMapper.getCardUnderKanban(kanbanId);
+    }
+
+    @Override
+    public Card getCardById(int cardId) {
+        return cardMapper.getCardById(cardId);
     }
 
 }

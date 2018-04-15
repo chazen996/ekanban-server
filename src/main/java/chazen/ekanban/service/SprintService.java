@@ -15,5 +15,5 @@ public interface SprintService {
     public int updateSprint(Sprint sprint);
     public int  deleteSprint(int sprintId);
     public List<Sprint> getTargetStatusSprints(int projectId, String sprintStatus);
-
+    public List<Card> getCardUnderSprintButWithoutKanbanId(int sprintId);
 }
