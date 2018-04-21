@@ -1,9 +1,9 @@
 package chazen.ekanban.web;
 
+import chazen.ekanban.entity.Kanban;
 import chazen.ekanban.entity.Project;
 import chazen.ekanban.entity.SysUser;
-import chazen.ekanban.service.ProjectService;
-import chazen.ekanban.service.UserService;
+import chazen.ekanban.service.*;
 import chazen.ekanban.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +36,15 @@ public class ProjectController{
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private KanbanService kanbanService;
+
+    @Autowired
+    private KanbanColumnService kanbanColumnService;
+
+    @Autowired
+    private CardService cardService;
 
     /* 登陆状态下获取当前用户所参与的项目（包括自己创建的） */
     @RequestMapping(value = "getProject", method = RequestMethod.GET)
@@ -96,8 +105,17 @@ public class ProjectController{
             if(user.getId()!=project.getCreatedBy()){
                 return "failure";
             }
-            projectService.deleteProject(projectId);
             projectService.deleteUserProject(projectId);
+            List<Kanban> kanbanList = kanbanService.getKanbanUnderProject(projectId);
+            for(Kanban kanban:kanbanList){
+                kanbanColumnService.deleteColumnUnderKanban(kanban.getKanbanId());
+                kanbanColumnService.deleteSwimlaneUnderKanban(kanban.getKanbanId());
+                cardService.deleteCardUnderKanban(kanban.getKanbanId());
+            }
+
+            projectService.deleteKanbanUnderProject(projectId);
+
+            projectService.deleteProject(projectId);
             return "success";
             /* 实际业务代码end */
         }else{

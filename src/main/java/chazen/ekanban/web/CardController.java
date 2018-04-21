@@ -98,10 +98,10 @@ public class CardController {
             if(projectTemp==null){
                 return "failure";
             }
-            /* 验证调用者是否为项目的所有人 */
-            if(projectTemp.getCreatedBy()!=user.getId()){
-                return "failure";
-            }
+            /* （删除任务不需要为项目所有人）验证调用者是否为项目的所有人 */
+//            if(projectTemp.getCreatedBy()!=user.getId()){
+//                return "failure";
+//            }
             /* 确认调用者在当前项目内 */
             if (projectService.confirmTargetUserProjectExits(projectId, user.getId()) <= 0) {
                 return "failure";
@@ -133,9 +133,9 @@ public class CardController {
                 return "failure";
             }
             /* 验证调用者是否为项目的所有人 */
-            if(projectTemp.getCreatedBy()!=user.getId()){
-                return "failure";
-            }
+//            if(projectTemp.getCreatedBy()!=user.getId()){
+//                return "failure";
+//            }
             /* 确认调用者在当前项目内 */
             if (projectService.confirmTargetUserProjectExits(projectId, user.getId()) <= 0) {
                 return "failure";

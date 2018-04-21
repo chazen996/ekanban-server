@@ -65,4 +65,14 @@ public class KanbanKanbanColumnServiceImpl implements KanbanColumnService {
     public int updateColumn(KanbanColumn kanbanColumn) {
         return kanbanColumnMapper.updateColumn(kanbanColumn);
     }
+
+    @Override
+    public int deleteColumnUnderKanban(int kanbanId) {
+        return kanbanColumnMapper.deleteColumnUnderKanban(kanbanId);
+    }
+
+    @Override
+    public int deleteSwimlaneUnderKanban(int kanbanId) {
+        return kanbanColumnMapper.deleteSwimlaneUnderKanban(kanbanId);
+    }
 }

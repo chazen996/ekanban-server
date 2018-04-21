@@ -5,7 +5,7 @@ public class Card {
     private String cardType;
     private String cardDescription;
     private String cardContent;
-    private String assignedPerson;
+    private int assignedPersonId;
     private int projectId;
     private int sprintId;
     private int kanbanId;
@@ -13,6 +13,18 @@ public class Card {
     private String columnId;
     private int positionX;
     private int positionY;
+
+    private SysUser assignedPerson;
+
+    private Kanban kanban;
+
+    public Kanban getKanban() {
+        return kanban;
+    }
+
+    public void setKanban(Kanban kanban) {
+        this.kanban = kanban;
+    }
 
     public String getColumnId() {
         return columnId;
@@ -78,11 +90,19 @@ public class Card {
         this.cardContent = cardContent;
     }
 
-    public String getAssignedPerson() {
+    public int getAssignedPersonId() {
+        return assignedPersonId;
+    }
+
+    public void setAssignedPersonId(int assignedPersonId) {
+        this.assignedPersonId = assignedPersonId;
+    }
+
+    public SysUser getAssignedPerson() {
         return assignedPerson;
     }
 
-    public void setAssignedPerson(String assignedPerson) {
+    public void setAssignedPerson(SysUser assignedPerson) {
         this.assignedPerson = assignedPerson;
     }
 

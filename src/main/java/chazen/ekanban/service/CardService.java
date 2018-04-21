@@ -15,4 +15,7 @@ public interface CardService {
     public int updateCard(Card card);
     public List<Card> getCardUnderKanban(int kanbanId);
     public Card getCardById(int cardId);
+    public int checkCurrentPositionCardNumber(Card card);
+    public int moveCard(Card card);
+    public int deleteCardUnderKanban(int kanbanId);
 }

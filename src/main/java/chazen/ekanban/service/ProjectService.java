@@ -22,4 +22,5 @@ public interface ProjectService {
     public  int getTargetProjectUserAmount(int projectId);
     public int changeProjectControlRight(int userId,int projectId);
     public Project getProjectByKanbanId(int kanbanId);
+    public int deleteKanbanUnderProject(int projectId);
 }

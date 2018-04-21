@@ -30,4 +30,13 @@ public interface CardMapper {
 
     @Select("select * from card where card_id=#{cardId}")
     public Card getCardById(int cardId);
+
+    @Select("select count(*) from card where kanban_id=#{kanbanId} and position_x=#{positionX} and position_y=#{positionY} and column_id=#{columnId}")
+    public int checkCurrentPositionCardNumber(Card card);
+
+    @Update("update card set kanban_id=#{kanbanId},position_x=#{positionX},position_y=#{positionY},column_id=#{columnId},card_status=#{cardStatus} where card_id=#{cardId}")
+    public int moveCard(Card card);
+
+    @Delete("delete from card where kanban_id=#{kanbanId}")
+    public int deleteCardUnderKanban(int kanbanId);
 }

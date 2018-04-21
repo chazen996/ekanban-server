@@ -34,6 +34,7 @@
             <if test="sprintId!=null and sprintId!=0">sprint_id=#{sprintId},</if>
             <if test="kanbanId!=null and kanbanId!=0">kanban_id=#{kanbanId},</if>
             <if test="cardStatus!=null">card_status=#{cardStatus},</if>
+            <if test="assignedPersonId!=null">assigned_person_id=#{assignedPersonId},</if>
         </trim>
         WHERE card_id=#{cardId}
     </update>
@@ -50,8 +51,8 @@
             <if test='cardContent != null'>
                 card_content,
             </if>
-            <if test='assignedPerson != null and assignedPerson != 0'>
-                assigned_person,
+            <if test='assignedPersonId != null and assignedPersonId != 0'>
+                assigned_person_id,
             </if>
             <if test='projectId != null and projectId != 0'>
                 project_id,
@@ -77,8 +78,8 @@
             <if test='cardContent != null'>
                 #{cardContent},
             </if>
-            <if test='assignedPerson != null and assignedPerson != 0'>
-                #{assignedPerson},
+            <if test='assignedPersonId != null and assignedPersonId != 0'>
+                #{assignedPersonId},
             </if>
             <if test='projectId != null and projectId != 0'>
                 #{projectId},

@@ -1,12 +1,10 @@
 package chazen.ekanban.web;
 
+import chazen.ekanban.entity.Card;
 import chazen.ekanban.entity.Project;
 import chazen.ekanban.entity.Sprint;
 import chazen.ekanban.entity.SysUser;
-import chazen.ekanban.service.CardService;
-import chazen.ekanban.service.ProjectService;
-import chazen.ekanban.service.SprintService;
-import chazen.ekanban.service.UserService;
+import chazen.ekanban.service.*;
 import chazen.ekanban.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +44,9 @@ public class SprintController {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private KanbanService kanbanService;
+
     @RequestMapping(value = "getSprint", method = RequestMethod.GET)
     public List<Sprint> getSprintUnderProject(int projectId, String username, HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
@@ -69,6 +70,16 @@ public class SprintController {
             List<Sprint> sprintList = sprintService.getSprintUnderProject(projectId);
             for(Sprint sprint:sprintList){
                 sprint.setCardList(sprintService.getCardUnderSprint(sprint.getSprintId()));
+                for(Card card:sprint.getCardList()){
+                    int assignedPersonId = card.getAssignedPersonId();
+                    int kanbanId = card.getKanbanId();
+                    if(assignedPersonId!=0){
+                        card.setAssignedPerson(userService.findUserById(assignedPersonId));
+                    }
+                    if(kanbanId!=0){
+                        card.setKanban(kanbanService.getKanbanById(kanbanId));
+                    }
+                }
             }
             return sprintList;
             /* 实际业务代码end */

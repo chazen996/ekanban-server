@@ -90,5 +90,10 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.getProjectByKanbanId(kanbanId);
     }
 
+    @Override
+    public int deleteKanbanUnderProject(int projectId) {
+        return projectMapper.deleteKanbanUnderProject(projectId);
+    }
+
 
 }

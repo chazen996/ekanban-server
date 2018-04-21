@@ -108,6 +108,7 @@ public class KanbanController {
         }
     }
 
+    @Transactional
     @RequestMapping(value = "deleteKanban",method = RequestMethod.POST)
     public String deleteKanban(@RequestBody Kanban kanban,String username,HttpServletRequest request){
         String token = request.getHeader(tokenHeader);
@@ -135,7 +136,13 @@ public class KanbanController {
             if (projectService.confirmTargetUserProjectExits(projectId, user.getId()) <= 0) {
                 return "failure";
             }
-            return kanbanService.deleteKanban(kanban.getKanbanId())==1?"success":"failure";
+
+            /* 级联删除泳道，列，卡片 */
+            kanbanColumnService.deleteColumnUnderKanban(kanban.getKanbanId());
+            kanbanColumnService.deleteSwimlaneUnderKanban(kanban.getKanbanId());
+            cardService.deleteCardUnderKanban(kanban.getKanbanId());
+            kanbanService.deleteKanban(kanban.getKanbanId());
+            return "success";
             /* 实际业务代码end */
         } else {
             return "failure";
@@ -382,6 +389,12 @@ public class KanbanController {
             List<Sprint> sprints = sprintService.getTargetStatusSprints(projectTemp.getProjectId(),"open");
             for(Sprint sprint:sprints){
                 sprint.setCardList(sprintService.getCardUnderSprintButWithoutKanbanId(sprint.getSprintId()));
+                for(Card card:sprint.getCardList()){
+                    int assignedPersonId = card.getAssignedPersonId();
+                    if(assignedPersonId!=0){
+                        card.setAssignedPerson(userService.findUserById(assignedPersonId));
+                    }
+                }
             }
             return sprints;
             /* 实际业务代码end */
@@ -414,8 +427,47 @@ public class KanbanController {
             if(projectTemp==null){
                 return null;
             }
+            List<Card> cardList = cardService.getCardUnderKanban(kanbanId);
+            for(Card card:cardList){
+                int assignedPersonId = card.getAssignedPersonId();
+                if(assignedPersonId!=0){
+                    card.setAssignedPerson(userService.findUserById(assignedPersonId));
+                }
+                card.setKanban(kanbanService.getKanbanById(kanbanId));
+            }
 
-            return cardService.getCardUnderKanban(kanbanId);
+            return cardList;
+            /* 实际业务代码end */
+        } else {
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getAllUserUnderProjectByKanbanId",method = RequestMethod.GET)
+    public List<SysUser> getAllUserUnderProjectByKanbanId(int kanbanId, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return null;
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return null;
+            }
+            Project projectTemp = projectService.getProjectByKanbanId(kanbanId);
+            if(projectTemp==null){
+                return null;
+            }
+            return projectService.getAllUserUnderProject(projectTemp.getProjectId());
             /* 实际业务代码end */
         } else {
             return null;
@@ -455,6 +507,39 @@ public class KanbanController {
             }
 
             return "success";
+            /* 实际业务代码end */
+        } else {
+            return "failure";
+        }
+    }
+
+    @RequestMapping(value = "moveCard",method = RequestMethod.POST)
+    public String moveCard(@RequestBody Card card, String username, HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String usernameTemp = jwtTokenUtil.getUsernameFromToken(token.substring(tokenHead.length()));
+        SysUser user = userService.findUserByUsername(username);
+        if (user == null) {
+            return "failure";
+        }
+        int kanbanId = card.getKanbanId();
+        /* 用户身份验证成功(验证token是否和调用者匹配) */
+        if (user.getUsername().equals(usernameTemp)) {
+            /* 实际业务代码start */
+            /* 验证当前看板是否存在 */
+            Kanban kanbanTemp = kanbanService.getKanbanById(kanbanId);
+            if(kanbanTemp==null){
+                return "failure";
+            }
+            /* 确认调用者在当前项目内 */
+            if (projectService.confirmTargetUserProjectExits(kanbanTemp.getProjectId(), user.getId()) <= 0) {
+                return "failure";
+            }
+            /* 确认所移位置不存在其他卡片 */
+            if(cardService.checkCurrentPositionCardNumber(card)>=1){
+                return "failure";
+            }
+            int result = cardService.moveCard(card);
+            return result>=1?"success":"failure";
             /* 实际业务代码end */
         } else {
             return "failure";

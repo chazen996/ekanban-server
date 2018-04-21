@@ -33,4 +33,10 @@ public interface KanbanColumnMapper {
     int deleteSwimlane(String swimlaneId);
     @Update("update swimlane set swimlane_name=#{swimlaneName},position=#{position},group_id=#{groupId},height=#{height},across_column=#{acrossColumn},column_position=#{columnPosition},group_member_number=#{groupMemberNumber} where swimlane_id=#{swimlaneId}")
     int updateSwimlane(Swimlane swimlane);
+
+    @Delete("delete from kanban_column where kanban_id=#{kanbanId}")
+    int deleteColumnUnderKanban(int kanbanId);
+
+    @Delete("delete from swimlane where kanban_id=#{kanbanId}")
+    int deleteSwimlaneUnderKanban(int kanbanId);
 }

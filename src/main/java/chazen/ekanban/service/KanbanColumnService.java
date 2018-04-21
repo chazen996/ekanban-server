@@ -17,5 +17,6 @@ public interface KanbanColumnService {
     int deleteColumn(String columnId);
     int updateSwimlane(Swimlane swimlane);
     int updateColumn(KanbanColumn kanbanColumn);
-
+    int deleteColumnUnderKanban(int kanbanId);
+    int deleteSwimlaneUnderKanban(int kanbanId);
 }

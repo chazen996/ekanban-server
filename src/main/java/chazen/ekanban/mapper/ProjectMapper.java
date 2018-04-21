@@ -52,4 +52,7 @@ public interface ProjectMapper {
 
     @Select("select * from project where project_id in (select project_id from kanban where kanban_id=#{kanbanId})")
     public Project getProjectByKanbanId(int kanbanId);
+
+    @Delete("delete from kanban where project_id=#{projectId}")
+    public int deleteKanbanUnderProject(int projectId);
 }

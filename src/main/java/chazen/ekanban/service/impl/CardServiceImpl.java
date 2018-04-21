@@ -55,4 +55,19 @@ public class CardServiceImpl implements CardService{
         return cardMapper.getCardById(cardId);
     }
 
+    @Override
+    public int checkCurrentPositionCardNumber(Card card) {
+        return cardMapper.checkCurrentPositionCardNumber(card);
+    }
+
+    @Override
+    public int moveCard(Card card) {
+        return cardMapper.moveCard(card);
+    }
+
+    @Override
+    public int deleteCardUnderKanban(int kanbanId) {
+        return cardMapper.deleteCardUnderKanban(kanbanId);
+    }
+
 }
