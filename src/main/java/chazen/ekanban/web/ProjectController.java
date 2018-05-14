@@ -32,12 +32,6 @@ public class ProjectController{
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProjectService projectService;
-
-    @Autowired
     private KanbanService kanbanService;
 
     @Autowired
@@ -46,7 +40,12 @@ public class ProjectController{
     @Autowired
     private CardService cardService;
 
-    /* 登陆状态下获取当前用户所参与的项目（包括自己创建的） */
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProjectService projectService;
+
     @RequestMapping(value = "getProject", method = RequestMethod.GET)
     public List<Project> getProjects(String username,HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);

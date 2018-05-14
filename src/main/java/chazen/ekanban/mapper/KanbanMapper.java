@@ -17,7 +17,7 @@ public interface KanbanMapper {
     @Delete("delete from kanban where kanban_id=#{kanbanId}")
     public int deleteKanban(int kanbanId);
 
-    @Update("update kanban set kanban_name=#{kanbanName},kanban_description=#{kanbanDescription}")
+    @Update("update kanban set kanban_name=#{kanbanName},kanban_description=#{kanbanDescription} where kanban_id=#{kanbanId}")
     public int updateKanban(Kanban kanban);
 
     @Select("select * from kanban where kanban_id=#{kanbanId}")
